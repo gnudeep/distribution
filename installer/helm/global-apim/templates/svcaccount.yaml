@@ -1,4 +1,3 @@
-{{- if .Values.persistence.enabled -}}
 # Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +13,7 @@
 # limitations under the License.
 
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: ServiceAccount
 metadata:
-  name: wso2apim-deployment-volume-claim
+  name: {{ .Values.svcaccount }}
   namespace : {{ .Values.namespace }}
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  {{if eq .Values.persistence.media "nfs" }}
-  storageClassName: ""
-  {{else if eq .Values.persistence.media "local-filesystem" }}
-  storageClassName: "local-storage"
-  {{end}}
-  selector:
-    matchLabels:
-      purpose: apim-shared-deployment
-{{- end -}}

@@ -4,7 +4,13 @@
 namespace: "cellery"
 svcaccount: "cellerysvc-account"
 
+# persistence:
+#   enabled: true
+#   media: default value "volatile" "local-filesystem" or "nfs"
+#   nfsServerIp: 192.168.100.10
+#   sharedDeploymentLocation: /deployment
+
 persistence:
-  enabled: true
-  media: "local-filesystem"
-  #media: default value "volatile" "local-filesystem" or "nfs"
+  enabled: false
+  media: "volatile"
+
