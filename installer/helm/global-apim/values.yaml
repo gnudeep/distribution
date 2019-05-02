@@ -1,0 +1,10 @@
+# Default values for global-apim.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+namespace: "cellery"
+svcaccount: "cellerysvc-account"
+
+persistence:
+  enabled: true
+  media: "local-filesystem"
+  #media: default value "volatile" "local-filesystem" or "nfs"
