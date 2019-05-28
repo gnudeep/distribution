@@ -19,12 +19,15 @@ metadata:
   namespace : {{ .Values.namespace }}
 data:
   {{- $file := .Files }}
+  {{- $dbuser := .Values.celleryDbUser }}
+  {{- $dbpassword := .Values.celleryDbPassword }}
   {{- range $path, $byte := .Files.Glob "confs/apim/datasources/*" }}
   {{- $list := $path | splitList "/"}}
   {{- $length := len $list }}
   {{- $last := add $length -1 }}
   {{ index $list $last }}: |-
-    {{- range $file.Lines $path }}
-    {{ . }}
+    {{- range $line := $file.Lines $path }}
+    {{ $line | replace "DATABASE_USERNAME" $dbuser | replace "DATABASE_PASSWORD" $dbpassword }}
     {{- end }}
   {{- end }}
+

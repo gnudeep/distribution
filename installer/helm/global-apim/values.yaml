@@ -1,7 +1,7 @@
 # Default values for global-apim.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-namespace: "cellery"
+namespace: "cellery-system"
 svcaccount: "cellerysvc-account"
 
 # persistence:
@@ -12,5 +12,10 @@ svcaccount: "cellerysvc-account"
 
 persistence:
   enabled: false
-  media: "volatile"
+#  media: "volatile"
 
+celleryDbUser: "cellery"
+celleryDbPassword: "cellerypasswd"
+
+service:
+  port: "9443"
