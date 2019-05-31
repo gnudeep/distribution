@@ -21,7 +21,7 @@
             <OverrideUsernameClaimFromInternalUsername>true</OverrideUsernameClaimFromInternalUsername>
             <Property name="isCascadeDeleteEnabled">true</Property>
  <Property name="initializeNewClaimManager">true</Property>
-            <Property name="dataSource">jdbc/WSO2IdentityDS</Property>
+            <Property name="dataSource">jdbc/WSO2UserDS</Property>
         </Configuration>
     <!-- Following is the configuration for internal JDBC user store. This user store manager is based on JDBC.
 	         In case if application needs to manage passwords externally set property

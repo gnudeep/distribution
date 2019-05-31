@@ -33,9 +33,9 @@ spec:
       containers:
       - name: wso2is
         {{- if or (eq .Values.username "") (eq .Values.password "") }}
-        image: wso2/wso2is:5.8.0
+        image: wso2cellery/wso2is-lightweight
         {{- else }}
-        image: docker.wso2.com/wso2is:5.8.0
+        image: wso2cellery/wso2is-lightweight
         {{- end }}
         livenessProbe:
           exec:
@@ -43,7 +43,7 @@ spec:
             - /bin/sh
             - -c
             - nc -z localhost 9443
-          initialDelaySeconds: 250
+          initialDelaySeconds: 60
           periodSeconds: 10
         readinessProbe:
           exec:
@@ -51,7 +51,7 @@ spec:
               - /bin/sh
               - -c
               - nc -z localhost 9443
-          initialDelaySeconds: 250
+          initialDelaySeconds: 30
           periodSeconds: 10
         lifecycle:
           preStop:
@@ -68,14 +68,14 @@ spec:
         volumeMounts:
         - name: identity-server-conf
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf
-        - name: identity-server-conf-axis2
-          mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/axis2
+#        - name: identity-server-conf-axis2
+#          mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/axis2
         - name: identity-server-conf-datasources
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/datasources
         - name: identity-server-conf-identity
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/identity
-        - name: shared-deployment-persistent-disk
         {{- if .Values.persistence.enabled }}
+        - name: shared-deployment-persistent-disk
           mountPath: /home/wso2carbon/wso2is-5.8.0/repository/deployment
         - name: shared-tenants-persistent-disk
           mountPath: /home/wso2carbon/wso2is-5.8.0/repository/tenants
@@ -85,9 +85,9 @@ spec:
       - name: identity-server-conf
         configMap:
           name: identity-server-conf
-      - name: identity-server-conf-axis2
-        configMap:
-          name: identity-server-conf-axis2
+ #     - name: identity-server-conf-axis2
+ #       configMap:
+ #         name: identity-server-conf-axis2
       - name: identity-server-conf-datasources
         configMap:
           name: identity-server-conf-datasources
