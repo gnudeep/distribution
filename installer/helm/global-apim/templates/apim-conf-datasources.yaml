@@ -21,13 +21,14 @@ data:
   {{- $file := .Files }}
   {{- $dbuser := .Values.celleryDbUser }}
   {{- $dbpassword := .Values.celleryDbPassword }}
+  {{- $dbhost := .Values.celleryDbHost }}
   {{- range $path, $byte := .Files.Glob "confs/apim/datasources/*" }}
   {{- $list := $path | splitList "/"}}
   {{- $length := len $list }}
   {{- $last := add $length -1 }}
   {{ index $list $last }}: |-
     {{- range $line := $file.Lines $path }}
-    {{ $line | replace "DATABASE_USERNAME" $dbuser | replace "DATABASE_PASSWORD" $dbpassword }}
+    {{ $line | replace "DATABASE_USERNAME" $dbuser | replace "DATABASE_PASSWORD" $dbpassword | replace "MYSQL_DATABASE_HOST" $dbhost }}
     {{- end }}
   {{- end }}
 

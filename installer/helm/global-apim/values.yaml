@@ -16,6 +16,7 @@ persistence:
 
 celleryDbUser: "cellery"
 celleryDbPassword: "cellerypasswd"
+celleryDbHost: "cellery-mysql"
 
 service:
   port: "9443"

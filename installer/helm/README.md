@@ -14,6 +14,10 @@ $ helm install istio --name istio --namespace istio-system
 #### Deploy APIM
 helm install --name gateway global-apim --namespace cellery-system
 
+#### Deploy IDP in Cellery minimal runtime
+helm install --name idp global-idp --namespace cellery-system
+
+
 #### Deploy Nginx Ingress
 #### On GCP with LB or on K8s in Docker for Desktop
 helm install stable/nginx-ingress --namespace ingress-nginx
@@ -27,6 +31,9 @@ helm del --purge cellery-controller
 
 #### Cleanup APIM
 helm del --purge gateway
+
+#### Cleanup IDP in Cellery minimal runtime
+helm del --purge idp
 
 #### Cleanup Istio
  helm delete --purge istio
