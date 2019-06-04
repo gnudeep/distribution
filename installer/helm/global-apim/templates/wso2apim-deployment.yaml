@@ -93,6 +93,14 @@ spec:
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf
         - name: apim-conf-datasources
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/datasources
+        - name: conf-identity
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/identity
+        - name: apim-template
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/resources/api_templates
+        - name: apim-tomcat
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/tomcat
+        - name: apim-security
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/security
       serviceAccountName: "cellerysvc-account"
       imagePullSecrets:
       - name: wso2creds
@@ -108,3 +116,15 @@ spec:
       - name: apim-conf-datasources
         configMap:
           name: apim-conf-datasources
+      - name: conf-identity
+        configMap:
+          name: conf-identity
+      - name: apim-template
+        configMap:
+          name: apim-template
+      - name: apim-tomcat
+        configMap:
+          name: apim-tomcat
+      - name: apim-security
+        configMap:
+          name: apim-security
