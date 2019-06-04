@@ -7,7 +7,6 @@ sleep 30s
 
 kubectl apply -f helm-service-account.yaml
 
-
 #### Deploy Cellery controller
 #Create cellery-system ns by controller yamls
 helm install --name cellery-controller controller
@@ -34,4 +33,4 @@ helm install --name observability-portal observability-portal --namespace celler
 #### On GCP with LB or on K8s in Docker for Desktop
 #helm install --name cellery-ingress stable/nginx-ingress --namespace ingress-nginx
 #### On Kubadm based K8s
-#helm install --name cellery-ingress stable/nginx-ingress --namespace ingress-nginx -f nginx-ingress/values.yaml
+helm install --name cellery-ingress stable/nginx-ingress --namespace ingress-nginx -f nginx-ingress/values.yaml

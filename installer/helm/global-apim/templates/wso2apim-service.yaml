@@ -47,7 +47,7 @@ metadata:
   name: idp
 spec:
   selector:
-    deployment: gateway
+    deployment: wso2apim
   ports:
   - name: servlet-http
     port: 9763
@@ -57,3 +57,4 @@ spec:
     port: 443
     targetPort: 9443
     protocol: TCP
+---

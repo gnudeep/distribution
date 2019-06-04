@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Clenaup Cellery Ingress
-#helm del --purge cellery-ingress
-#kubectl delete ns ingress-nginx
+helm del --purge cellery-ingress
+kubectl delete ns ingress-nginx
 
 # Cleanup Observability Portal
 helm del --purge observability-portal
