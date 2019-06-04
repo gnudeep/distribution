@@ -13,6 +13,7 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
+SET GLOBAL max_connections = 500;
 
 DROP DATABASE IF EXISTS WSO2AM_COMMON_DB;
 DROP DATABASE IF EXISTS WSO2AM_APIMGT_DB;

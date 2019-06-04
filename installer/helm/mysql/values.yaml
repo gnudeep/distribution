@@ -106,11 +106,14 @@ securityContext:
 ##
 resources:
   requests:
-    memory: 256Mi
-    cpu: 100m
+    memory: 1024Mi
+    cpu: 1024m
 
 # Custom mysql configuration files used to override default mysql settings
-configurationFiles: {}
+configurationFiles:
+  mysql_custom.cnf: |-
+    [mysqld]
+    max_connections=20000
 #  mysql.cnf: |-
 #    [mysqld]
 #    skip-name-resolve

@@ -17,6 +17,11 @@ helm install --name gateway global-apim --namespace cellery-system
 #### Deploy IDP in Cellery minimal runtime
 helm install --name idp global-idp --namespace cellery-system
 
+#### Deploy SP Worker
+helm install --name sp-worker sp-worker --namespace cellery-system
+
+#### Deploy Observability Portal
+helm install --name observability-portal observability-portal --namespace cellery-system
 
 #### Deploy Nginx Ingress
 #### On GCP with LB or on K8s in Docker for Desktop
@@ -26,8 +31,14 @@ helm install --name cellery-ingress stable/nginx-ingress --namespace ingress-ngi
 
 # Celanup Cellery Runtime using Helm
 
-### Clenaup Cellery controller
-helm del --purge cellery-controller
+#### Celanup Ingress
+helm del --purge cellery-ingress
+
+#### Cleanup Observability Portal
+helm del --purge observability-portal
+
+#### Cleanup SP Worker
+helm del --purge sp-worker
 
 #### Cleanup APIM
 helm del --purge gateway
@@ -36,7 +47,11 @@ helm del --purge gateway
 helm del --purge idp
 
 #### Cleanup Istio
- helm delete --purge istio
+helm del --purge istio
 
 #### Cleanup Mysql
 helm del --purge cellery-mysql
+
+#### Clenaup Cellery controller
+helm del --purge cellery-controller
+

@@ -39,3 +39,21 @@ spec:
       name: servlet-https
       protocol: TCP
       port: 9443
+---
+# This is required when idp.cellery-system calls are made assuming there is an IDP running within the mesh
+apiVersion: v1
+kind: Service
+metadata:
+  name: idp
+spec:
+  selector:
+    deployment: gateway
+  ports:
+  - name: servlet-http
+    port: 9763
+    targetPort: 9763
+    protocol: TCP
+  - name: servlet-https
+    port: 443
+    targetPort: 9443
+    protocol: TCP
