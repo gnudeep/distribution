@@ -15,7 +15,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: apim-conf
+  name: conf-identity
   namespace : {{ .Values.namespace }}
 data:
   {{- $file := .Files }}
