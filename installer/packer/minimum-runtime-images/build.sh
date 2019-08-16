@@ -16,5 +16,4 @@
 # limitations under the License
 #
 # ------------------------------------------------------------------------
-
-packer build -var 'version=0.2.0' -on-error=ask ubuntu.json 
+packer build -var 'version=0.4.0' -on-error=ask ubuntu.json 

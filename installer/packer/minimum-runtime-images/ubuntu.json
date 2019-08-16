@@ -62,7 +62,18 @@
       "type": "compress",
       "format": "tar.gz"
     }],
-    "provisioners": [{
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "resources/rbac-config.yaml",
+            "destination": "/tmp/rbac-config.yaml",
+            "direction": "upload"
+        },
+        {
+            "type": "shell",
+            "inline": ["echo 'vagrant' | sudo -S sh -c 'cp /tmp/rbac-config.yaml /home/vagrant/rbac-config.yaml'"]
+        },
+        {
         "environment_vars": [
             "DEBIAN_FRONTEND=noninteractive",
             "UPDATE={{user `update`}}",
@@ -86,7 +97,7 @@
             "script/cellery.sh"
         ],
         "type": "shell"
-    },
+        },
         {
             "type": "file",
             "source": "/home/vagrant/.kube/config",
@@ -102,6 +113,16 @@
         {
             "type": "shell",
             "inline": ["echo 'vagrant' | sudo -S sh -c 'cp /tmp/50-cellery.yaml /etc/netplan/50-cellery.yaml'"]
+        },
+        {
+            "type": "file",
+            "source": "resources/rbac-config.yaml",
+            "destination": "/tmp/rbac-config.yaml",
+            "direction": "upload"
+        },
+        {
+            "type": "shell",
+            "inline": ["echo 'vagrant' | sudo -S sh -c 'cp /tmp/rbac-config.yaml /home/vagrant/rbac-config.yaml'"]
         }
     ],
     "variables": {

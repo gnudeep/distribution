@@ -63,6 +63,10 @@ apt-get install -y kubelet=$K8S_VERSION kubeadm=$K8S_VERSION kubectl=$K8S_VERSIO
 
 apt-mark hold kubelet kubeadm kubectl
 
+#Install Helm using snap
+apt-get -y install snapd
+snap install helm --classic
+
 #Initialize the k8s cluster
 kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=0.0.0.0
 
