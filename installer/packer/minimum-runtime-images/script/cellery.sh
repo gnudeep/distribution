@@ -46,62 +46,80 @@ fi
 mkdir -p /mnt/apim_repository_deployment_server
 chown 802:802 /mnt/apim_repository_deployment_server
 
-declare -A config_params
-config_params["MYSQL_DATABASE_HOST"]="wso2apim-with-analytics-rdbms-service"
-config_params["DATABASE_USERNAME"]="cellery"
-db_passwd=$(cat /dev/urandom | env LC_CTYPE=C tr -dc a-zA-Z0-9 | head -c 16; echo)
-config_params["DATABASE_PASSWORD"]=$db_passwd
-
-for param in "${!config_params[@]}"
-do
-    sed -i "s/$param/${config_params[$param]}/g" ${download_path}/distribution-${release_version}/installer/k8s-artefacts/global-idp/conf/datasources/master-datasources.xml
-    sed -i "s/$param/${config_params[$param]}/g" ${download_path}/distribution-${release_version}/installer/k8s-artefacts/global-apim/conf/datasources/master-datasources.xml
-    sed -i "s/$param/${config_params[$param]}/g" ${download_path}/distribution-${release_version}/installer/k8s-artefacts/observability/sp/conf/deployment.yaml
-done
-
-for param in "${!config_params[@]}"
-do
-    sed -i "s/$param/${config_params[$param]}/g" ${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/dbscripts/init.sql
-done
-
-#Deploy Cellery k8s artifacts
-#Create Cellery ns
-kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/system/ns-init.yaml
+#declare -A config_params
+#config_params["MYSQL_DATABASE_HOST"]="wso2apim-with-analytics-rdbms-service"
+#config_params["DATABASE_USERNAME"]="cellery"
+#db_passwd=$(cat /dev/urandom | env LC_CTYPE=C tr -dc a-zA-Z0-9 | head -c 16; echo)
+#config_params["DATABASE_PASSWORD"]=$db_passwd
+#
+#for param in "${!config_params[@]}"
+#do
+#    sed -i "s/$param/${config_params[$param]}/g" ${download_path}/distribution-${release_version}/installer/k8s-artefacts/global-idp/conf/datasources/master-datasources.xml
+#    sed -i "s/$param/${config_params[$param]}/g" ${download_path}/distribution-${release_version}/installer/k8s-artefacts/global-apim/conf/datasources/master-datasources.xml
+#    sed -i "s/$param/${config_params[$param]}/g" ${download_path}/distribution-${release_version}/installer/k8s-artefacts/observability/sp/conf/deployment.yaml
+#done
+#
+#for param in "${!config_params[@]}"
+#do
+#    sed -i "s/$param/${config_params[$param]}/g" ${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/dbscripts/init.sql
+#done
+#
+##Deploy Cellery k8s artifacts
+##Create Cellery ns
+#kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/system/ns-init.yaml
 
 HOST_NAME=$(hostname | tr '[:upper:]' '[:lower:]')
 #label the node if k8s provider is kubeadm
 kubectl label nodes $HOST_NAME disk=local
 
-#Create mysql deployment
-kubectl create configmap mysql-dbscripts --from-file=${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/dbscripts/ -n cellery-system
-kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/mysql-persistent-volumes-local.yaml -n cellery-system
-kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/mysql-persistent-volume-claim.yaml -n cellery-system
-kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/mysql-deployment.yaml -n cellery-system
-#Wait till the mysql deployment availability
-kubectl wait deployment/wso2apim-with-analytics-mysql-deployment --for condition=available --timeout=6000s -n cellery-system
-kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/mysql-service.yaml -n cellery-system
+##Create mysql deployment
+#kubectl create configmap mysql-dbscripts --from-file=${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/dbscripts/ -n cellery-system
+#kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/mysql-persistent-volumes-local.yaml -n cellery-system
+#kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/mysql-persistent-volume-claim.yaml -n cellery-system
+#kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/mysql-deployment.yaml -n cellery-system
+##Wait till the mysql deployment availability
+#kubectl wait deployment/wso2apim-with-analytics-mysql-deployment --for condition=available --timeout=6000s -n cellery-system
+#kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/mysql/mysql-service.yaml -n cellery-system
+#
+##Create Istio deployment
+#kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/system/istio-crds.yaml
+#kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/system/istio-demo-cellery.yaml
+#kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/system/istio-gateway.yaml
+#kubectl wait deployment/istio-pilot --for condition=available --timeout=6000s -n istio-system
+##Enabling Istio injection
+#kubectl label namespace default istio-injection=enabled
+#sleep 120
+#
+##Installing Knative Serving CRD's
+#kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/system/knative-serving-crds.yaml
+#
+##Create Cellery CRDs.
+#kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/controller/
 
-#Create Istio deployment
-kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/system/istio-crds.yaml
-kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/system/istio-demo-cellery.yaml
-kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/system/istio-gateway.yaml
-kubectl wait deployment/istio-pilot --for condition=available --timeout=6000s -n istio-system
-#Enabling Istio injection
-kubectl label namespace default istio-injection=enabled
-sleep 120
-
-#Installing Knative Serving CRD's
-kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/system/knative-serving-crds.yaml
-
-#Create Cellery CRDs.
-kubectl apply -f ${download_path}/distribution-${release_version}/installer/k8s-artefacts/controller/
-=======
-# Install ingress nginx
+# Install the Cellery runtime
 kubectl create -f /home/vagrant/rbac-config.yaml
 helm init --upgrade --service-account tiller
 sleep 120
+
+# Install istio
+curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.2.2 sh -
+cd istio-1.2.2/
+helm install install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
+crd_count=$(kubectl get crds | grep 'istio.io\|certmanager.k8s.io' | wc -l)
+if [[ crd_count -eq 23 ]]; then
+    helm install install/kubernetes/helm/istio --name istio --namespace istio-system
+    echo "Istio installation is finished"
+fi
+cd ..
+# Install Cellery control plane
 helm install --name cellery-runtime ${download_path}/distribution-${release_version}/installer/helm/cellery-runtime
-helm install --name ingress-contraller stable/nginx-ingress --namespace ingress-controller
+# Install ingress controller
+cd ${download_path}/distribution-${release_version}/installer/helm/ingress-controller/
+mkdir charts
+cd charts
+helm fetch stable/nginx-ingress
+cd ../../../../../../
+helm install --name ingress-controller ${download_path}/distribution-${release_version}/installer/helm/ingress-controller --namespace ingress-controller
 
 #declare -A config_params
 #config_params["MYSQL_DATABASE_HOST"]="wso2apim-with-analytics-rdbms-service"

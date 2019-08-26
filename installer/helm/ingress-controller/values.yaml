@@ -28,4 +28,4 @@ nginx-ingress:
       type: "NodePort"
 
       externalIPs:
-      - 10.100.1.94
+      - 192.168.56.10
